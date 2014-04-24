@@ -1,0 +1,318 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> 
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+<!--<link rel="stylesheet" type="text/css" media="all" href="style.css">-->
+<style type="text/css">
+<!--
+@charset "utf-8";
+/* CSS Document */
+
+/*-- CSS Reset--*/
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td {
+    margin:0;
+    padding:0;
+}
+table {
+    border-collapse:collapse;
+    border-spacing:0;
+}
+fieldset, img, abbr, acronym {
+    border:0;
+}
+address, caption, cite, code, dfn, em, th, var {
+    font-style:normal;
+    font-weight:normal;
+}
+ol, ul {
+    list-style:none;
+}
+caption, th {
+    text-align:left;
+}
+h1, h2, h3, h4, h5, h6 {
+    #font-size:100%;
+    #font-weight:normal;
+}
+q:before, q:after {
+    content:'';
+}
+pre {
+    font-size: 1em;
+}
+/*---------------------------------------------------
+                                            CSS 全域
+---------------------------------------------------*/
+#wrapper {
+    -webkit-border-top-left-radius: 99px;
+    -moz-border-radius-topleft: 99px;
+    border-top-left-radius: 99px;
+	border-radius: 10px;
+    width:700px;
+    #background: #09F;
+    #border: 3px solid #06F;
+    text-align: left;
+    overflow:hidden;
+    margin: 20px auto 0px auto;
+	
+}
+
+
+#header {
+	width: 650px;
+	background-color:#FFF;
+	margin: 0px auto 0px auto;
+}
+#brand{
+	height: 80px;
+}
+#menu{
+	width: 650px;
+	height:25px;
+	background-color:#09F;
+	color:#FFF;
+}
+#menu li{
+	height:25px;
+	line-height:25px;
+	float:left;
+	vertical-align: middle;
+	margin-right:10px;	
+}
+#main{
+	margin: 0px auto 0px auto;
+	width: 650px;
+	background-color:#fff;
+}
+
+
+#container{}
+#content {
+	#border: 1px solid #06F;
+    width: 440px;
+    padding:10px;
+    #float:left;
+	}
+#content .form-group{
+    border-bottom: 1px solid #c0c0c0; 
+}
+#sidebar{
+    
+    padding:10px;
+    width: 200px;
+    #float:left;
+}
+
+
+#footer{
+    clear:both;
+	width: 650px;
+	background-color:#FFF;
+	margin: 0px auto 0px auto;
+}
+
+#copyright{
+    
+}
+#sidebar .nav-header{
+    padding:3px;
+}
+#sidebar .sidebar-nav{
+    padding:0px;
+    margin:3px;
+}
+
+#sidebar .active {
+    background-color:#0088CC;
+    color:#000;
+    border:0 #f2f2f2 solid;
+    border-bottom-width:1px;
+}
+#sidebar .active a {
+    background-color:#0088CC;
+    color:#fff;
+}
+-->
+ </style>
+<title>神魔之塔 最佳肥料經驗計算機</title>
+<meta name="description" property="og:description" itemprop="description" lang="zh-Hant-TW" content="神魔之塔"/>
+</head>
+
+<script type="text/javascript"> 
+//<![CDATA[
+$(function(){
+    init();
+});
+var $btn_gen_table;
+var $btn_login;
+var tos_set_data;
+
+function init(){
+    $btn_gen_table = $('#btn_gen_table');
+    $btn_gen_table.click(function(){gen_table();});
+ 
+}
+
+/**
+ * 產生表格
+ */
+function gen_table(){
+    var mExpCurve = getExpCurve();
+    var mMaxLevel = getMaxLevel();
+    var $exp_table = $("#exp tbody");
+    
+    //clear
+    $exp_table.html("");
+    var myArr1 = Array(0, 0, 0);
+    var myArr2 = Array();
+    for(var i=1;i<=mMaxLevel; i++){
+        //myArr[i] = i;
+        var mLv_Exp = Lv_Exp(mExpCurve,i);
+        var mstr_Exp = str_Exp(i);
+        
+        var $table_data = $("<tr>").append(
+            $("<td>").text(i),
+            $("<td>").text(mLv_Exp),
+            $("<td>").text(mstr_Exp),
+            $("<td>").text(mstr_Exp-mLv_Exp)
+        );
+        
+        if(myArr1[0]<(mstr_Exp-mLv_Exp)){
+            //最一大值
+            myArr1[2] = myArr1[1];
+            myArr1[1] = myArr1[0];
+            myArr1[0] = mstr_Exp-mLv_Exp;
+            myArr2[2] = myArr2[1];
+            myArr2[1] = myArr2[0];
+            myArr2[0] = $table_data;
+            
+        }else if(myArr1[1]<(mstr_Exp-mLv_Exp)){
+            //最二大值
+            myArr1[2] = myArr1[1];
+            myArr1[1] = mstr_Exp-mLv_Exp;
+            myArr2[2] = myArr2[1];
+            myArr2[1] = $table_data;
+            
+        }else if(myArr1[2]<(mstr_Exp-mLv_Exp)){
+            //最三大值
+            myArr1[2] = mstr_Exp-mLv_Exp;
+            myArr2[2] = $table_data;
+        }
+        
+        $exp_table.append($table_data);
+        
+    }
+    
+    myArr2[0].addClass("danger");
+    myArr2[1].addClass("success");
+    myArr2[2].addClass("warning");
+}
+
+/**
+ *
+ * 取得等級
+ */
+function getMaxLevel(){
+  //config 資料在第一頁
+
+  return parseInt($('#Max_Lv').val());
+}
+
+
+/**
+ * 取得經驗曲線
+ */
+function getExpCurve(){
+  //config 資料在第一頁
+  return $('#ExpCurve').val()*10000;
+}
+
+/**
+ * 累計經驗值
+ */
+function Lv_Exp(ExpCurve,level){
+  //累計經驗值 = 經驗曲線x(等級- 1)^2/98^2
+  return Math.ceil( ExpCurve * Math.pow(level-1,2) / Math.pow(98,2));
+}
+
+/**
+ * 強化經驗值
+ */
+function str_Exp(level){
+  var Lv1_Exp = parseInt($('#Lv1_Exp').val());
+  var str_Exp = parseInt($('#Str_Exp').val());
+  //console.log(Lv1_Exp,str_Exp,level);
+  return Math.ceil( Lv1_Exp + (level-1) * str_Exp);
+}
+//]]>
+</script>
+
+<body>
+<div id="wrapper">
+    <div id="header">
+        <div id="brand"><h1 id="title">神魔之塔 最佳肥料經驗計算機</h1></div>
+        <div id="menu">
+             <ol><li><a href="./">神魔之塔 最佳肥料經驗計算機</a></li></ol></div>
+    </div>
+    <div id="main">
+        <div id="container">
+
+            <div id="sidebar" class="col-sm-6">
+                
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="ExpCurve" class="control-label">經驗曲線</label>
+                        <div class="">
+                            <input type="text" class="form-control" id="ExpCurve" placeholder="500">
+                        </div>
+                        <span class="">萬</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="Max_Lv" class="control-label">滿等等級</label>
+                        <input type="text" class="form-control" id="Max_Lv" placeholder="99">
+                    </div>
+                    <div class="form-group">
+                        <label for="Lv1_Exp" class="control-label">LV1強化經驗</label>
+                        <input type="text" class="form-control" id="Lv1_Exp" placeholder="1000">
+                    </div>
+                    <div class="form-group">
+                        <label for="Str_Exp" class="control-label">每LV 增加經驗</label>
+                        <input type="text" class="form-control" id="Str_Exp" placeholder="1000">
+                    </div>
+                </form>
+                <div class="col-sm-offset-2 col-sm-10">
+                  <button id="btn_gen_table" type="submit" class="btn btn-primary">產生表格</button>
+                </div>
+            </div><!--/#sidebar-->
+            
+            <div id="content" class="col-sm-6">
+                <table id="exp" class="table table-condensed">
+                <thead><tr>
+                    <th>LV</th>
+                    <th>需求經驗值</th>
+                    <th>強化經驗值</th>
+                    <th>經驗淨利值</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr class="danger"><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                    <tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                </tbody>
+                </table>
+            </div><!--/#Content-->
+        </div>
+        
+    </div>
+    
+    <div id="footer" >
+        <div id="copyright">copyright</div>
+    </div>
+</div>
+
+</body>
+</html>
