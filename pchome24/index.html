@@ -2,11 +2,11 @@
 <html>
 <head>
 <meta charset="utf-8">
-<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
-<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
 
-<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> 
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> 
+<script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 <!--<link rel="stylesheet" type="text/css" media="all" href="style.css">-->
 <style type="text/css">
 <!--
@@ -56,7 +56,7 @@ pre {
 }
 -->
  </style>
-<title>pchome 整點特賣</title>
+<title>pchome 整點特賣 v3</title>
 <meta name="description" property="og:description" itemprop="description" lang="zh-Hant-TW" content="pchome 整點特賣"/>
 </head>
 
@@ -72,13 +72,13 @@ function init(){
     $pchome24 = $("#pchome24");
     
     var dd = new Date();
-    var $a =  $("<a>").attr("href","http://24h.pchome.com.tw/onsale/v2/"+date_f(dd)).text(date_f(dd)+" (今日)");
+    var $a =  $("<a>").attr("href","https://24h.pchome.com.tw/onsale/v3/"+date_f(dd)+"/").text(date_f(dd)+" (今日)");
     $pchome24.append($a);
     $pchome24.append("<br />");
     
     for (var i=0; i<10; i++){
         dd.setTime(dd.getTime()-86400000);
-        var $a =  $("<a>").attr("href","http://24h.pchome.com.tw/onsale/v2/"+date_f(dd)).text(date_f(dd));
+        var $a =  $("<a>").attr("href","https://24h.pchome.com.tw/onsale/v3/"+date_f(dd)+"/").text(date_f(dd));
         $pchome24.append($a);
         $pchome24.append("<br />");
     }
@@ -107,7 +107,7 @@ function date_f(dd){
 
 <body>
 <div id="pchome24" class="lead">
-pchome 整點特賣<br /><br />
+pchome 整點特賣 v3<br /><br />
 </div>
 </body>
 </html>
