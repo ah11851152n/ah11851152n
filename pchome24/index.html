@@ -72,13 +72,25 @@ function init(){
     $pchome24 = $("#pchome24");
     
     var dd = new Date();
-    var $a =  $("<a>").attr("href","https://24h.pchome.com.tw/onsale/v3/"+date_f(dd)+"/").text(date_f(dd)+" (今日)");
+    var $a =  $("<a>").attr("href","https://24h.pchome.com.tw/onsale/v3/"+date_f(dd)+"/").text("24h購物 "+date_f(dd)+" (今日)");
     $pchome24.append($a);
     $pchome24.append("<br />");
     
     for (var i=0; i<10; i++){
         dd.setTime(dd.getTime()-86400000);
-        var $a =  $("<a>").attr("href","https://24h.pchome.com.tw/onsale/v3/"+date_f(dd)+"/").text(date_f(dd));
+        var $a =  $("<a>").attr("href","https://24h.pchome.com.tw/onsale/v3/"+date_f(dd)+"/").text("24h購物 "+date_f(dd));
+        $pchome24.append($a);
+        $pchome24.append("<br />");
+    }
+    
+    var dd = new Date();
+    var $a =  $("<a>").attr("href","https://mall.pchome.com.tw/onsale/v3/"+date_f(dd)+"/").text("購物中心 "+date_f(dd)+" (今日)");
+    $pchome24.append($a);
+    $pchome24.append("<br />");
+    
+    for (var i=0; i<10; i++){
+        dd.setTime(dd.getTime()-86400000);
+        var $a =  $("<a>").attr("href","https://mall.pchome.com.tw/onsale/v3/"+date_f(dd)+"/").text("購物中心 "+date_f(dd));
         $pchome24.append($a);
         $pchome24.append("<br />");
     }
