@@ -1,0 +1,116 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> 
+<script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+<!--<link rel="stylesheet" type="text/css" media="all" href="style.css">-->
+<style type="text/css">
+<!--
+@charset "utf-8";
+/* CSS Document */
+
+/*-- CSS Reset--*/
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td {
+    margin:0;
+    padding:0;
+}
+table {
+    border-collapse:collapse;
+    border-spacing:0;
+}
+fieldset, img, abbr, acronym {
+    border:0;
+}
+address, caption, cite, code, dfn, em, th, var {
+    font-style:normal;
+    font-weight:normal;
+}
+ol, ul {
+    list-style:none;
+}
+caption, th {
+    text-align:left;
+}
+h1, h2, h3, h4, h5, h6 {
+    #font-size:100%;
+    #font-weight:normal;
+}
+q:before, q:after {
+    content:'';
+}
+pre {
+    font-size: 1em;
+}
+/*---------------------------------------------------
+                                            CSS 全域
+---------------------------------------------------*/
+
+
+#pchome24 {
+	background-color:#FFF;
+	margin: 10px 30px 0px 30px;
+}
+-->
+ </style>
+<title>原神 搜圖</title>
+</head>
+
+<script type="text/javascript"> 
+//<![CDATA[
+$(function(){
+    //init();
+});
+
+var $pchome24;
+
+function twitter_query_link(keyword_str=""){
+    $pchome24 = $("#pchome24");
+		var dd = new Date();
+		
+		var since_now = "since:"+date_f(dd)
+    var tw_like="https://twitter.com/search?q="+encodeURIComponent(keyword_str)+"%20"+"since:2021-06-11";
+    var $a =  $("<a>").attr("href",tw_like).text(keyword_str+" "+date_f(dd)+" (今日)");
+    $pchome24.append($a);
+    $pchome24.append("<br />");
+}
+
+/**
+日期格式
+**/
+function date_f(dd){
+    
+    var ddY = dd.getFullYear();
+    var ddM = dd.getMonth()+1;
+    var ddD = dd.getDate();
+    if (ddM<10){
+        ddM = "0"+ddM;
+    }
+    if (ddD<10){
+        ddD = "0"+ddD;
+    }
+    return ddY+"-"+ddM+"-"+ddD;
+ 
+}
+//]]>
+</script>
+
+<body>
+<div id="pchome24" class="lead">
+</div>
+<script type="text/javascript"> 
+//<![CDATA[
+
+twitter_query_link("(#原神 OR #GenshinImpact OR #Genshin)");
+twitter_query_link("(yoimiya OR #yoimiya)");
+twitter_query_link("(yantao OR #yantao)");
+twitter_query_link("(klee OR #klee)");
+twitter_query_link("(Jean OR #Jean)");
+twitter_query_link("(芭芭拉 OR barbara OR #barbara)");
+//]]>
+</script>
+</body>
+</html>
