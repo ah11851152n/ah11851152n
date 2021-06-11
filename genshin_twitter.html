@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -72,7 +72,7 @@ function twitter_query_link(keyword_str=""){
 		var dd = new Date();
 		
 		var since_now = "since:"+date_f(dd)
-    var tw_like="https://twitter.com/search?q="+encodeURIComponent(keyword_str)+"%20"+"since:2021-06-11";
+    var tw_like="https://twitter.com/search?q="+encodeURIComponent(keyword_str)+"%20"+since_now;
     var $a =  $("<a>").attr("href",tw_like).text(keyword_str+" "+date_f(dd)+" (今日)");
     $pchome24.append($a);
     $pchome24.append("<br />");
