@@ -31,16 +31,18 @@
         .sms {
             margin-bottom: 10px;
         }
-        input {
+        input[type="tel"] {
             padding: 10px;
             font-size: 1.2em;
             margin-bottom: 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <input type="text" id="phoneNumber" placeholder="輸入電話號碼">
+        <input type="tel" id="phoneNumber" placeholder="輸入電話號碼">
         <div class="sms">
             <a class="rounded-button" id="sendLink1" href="#">Send 管理室</a>
         </div>
