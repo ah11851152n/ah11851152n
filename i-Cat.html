@@ -9,8 +9,10 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
+        }
+        .logo {
+            height: 10vh; /* 使用相對單位vh來適應行動裝置 */
+            width: 100%;
         }
         .rounded-button {
             display: inline-block;
@@ -38,16 +40,27 @@
             border: 2px solid #ccc;
             border-radius: 5px;
         }
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <input type="tel" id="phoneNumber" placeholder="輸入電話號碼">
-        <div class="sms">
-            <a class="rounded-button" id="sendLink1" href="#">Send 管理室</a>
+        <div class="logo">
+            <!-- 這裡可以放置logo -->
         </div>
-        <div class="sms">
-            <a class="rounded-button" id="sendLink2" href="#">Send 不在家</a>
+        <div class="content">
+            <input type="tel" id="phoneNumber" placeholder="輸入電話號碼">
+            <div class="sms">
+                <a class="rounded-button" id="sendLink1" href="#">Send 管理室</a>
+            </div>
+            <div class="sms">
+                <a class="rounded-button" id="sendLink2" href="#">Send 不在家</a>
+            </div>
         </div>
     </div>
 
