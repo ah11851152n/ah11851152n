@@ -70,14 +70,26 @@
             $('#sendLink1').click(function() {
                 var phoneNumber = $('#phoneNumber').val();
                 if (phoneNumber) {
-                    $(this).attr('href', 'sms://' + phoneNumber + '?&body=尊敬的客戶，%0A%0A您的包裹已經送達管理室，請您方便時前來領取。%0A%0A我是黑貓宅急便。%0A%0A謝謝！');
+                    var message = '尊敬的客戶，\n\n您的包裹已經送達管理室，請您方便時前來領取。\n\n我是黑貓宅急便。\n\n謝謝！';
+                    $(this).attr('href', 'tel:' + phoneNumber);
+                    navigator.clipboard.writeText(message).then(function() {
+                        alert('短信內容已複製到剪貼板');
+                    }, function(err) {
+                        console.error('無法複製短信內容: ', err);
+                    });
                 }
             });
 
             $('#sendLink2').click(function() {
                 var phoneNumber = $('#phoneNumber').val();
                 if (phoneNumber) {
-                    $(this).attr('href', 'sms://' + phoneNumber + '?&body=尊敬的客戶，%0A%0A您好！由於無法送達，您的包裹需要與我們聯繫安排後續事宜。%0A%0A黑貓宅急便。%0A%0A感謝您的支持與配合！');
+                    var message = '尊敬的客戶，\n\n您好！由於無法送達，您的包裹需要與我們聯繫安排後續事宜。\n\n黑貓宅急便。\n\n感謝您的支持與配合！';
+                    $(this).attr('href', 'tel:' + phoneNumber);
+                    navigator.clipboard.writeText(message).then(function() {
+                        alert('短信內容已複製到剪貼板');
+                    }, function(err) {
+                        console.error('無法複製短信內容: ', err);
+                    });
                 }
             });
         });
