@@ -49,11 +49,18 @@
         return 27;
       };
 
-      // 若金額小於等於 40000，直接全超商處理最便宜
+      // 若金額小於等於 40000，需判斷是否為整百
       if (T <= 40000) {
-        let f = convFee(T);
-        breakdown.push(`超商繳 ${T} 元，手續費 ${f} 元`);
-        fee += f;
+        if (T % 100 === 0) {
+          // 整百金額，走中信最省
+          breakdown.push(`中信繳 ${T} 元，手續費 5 元`);
+          fee += 5;
+        } else {
+          // 有零錢，用一次超商最省
+          let f = convFee(T);
+          breakdown.push(`超商繳 ${T} 元，手續費 ${f} 元`);
+          fee += f;
+        }
       } else {
         // 中信優先繳整百，最多 150000 一筆
         while (remain >= 100) {
