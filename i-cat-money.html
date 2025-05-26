@@ -1,0 +1,84 @@
+<!DOCTYPE html><html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>繳費手續費計算器</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+      background: #f5f5f5;
+    }
+    .card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      max-width: 500px;
+      margin: auto;
+    }
+    input, button {
+      padding: 0.5rem;
+      font-size: 1rem;
+      margin: 0.5rem 0;
+      width: 100%;
+    }
+    .result {
+      margin-top: 1rem;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>最低手續費繳費拆法計算器</h2>
+    <input type="number" id="amount" placeholder="請輸入繳費金額（元）">
+    <button onclick="calculate()">計算</button>
+    <div class="result" id="result"></div>
+  </div>  <script>
+    function calculate() {
+      let T = parseInt(document.getElementById("amount").value);
+      if (isNaN(T) || T <= 0) return;
+      let result = "";
+      let fee = 0;
+      let breakdown = [];
+
+      let remain = T;
+
+      // 中信分筆，每筆最多 150000，整百
+      while (remain >= 100) {
+        let thisPay = Math.min(Math.floor(remain / 100) * 100, 150000);
+        breakdown.push(`中信繳 ${thisPay} 元，手續費 5 元`);
+        fee += 5;
+        remain -= thisPay;
+        if (thisPay < 150000) break; // 不再多筆中信
+      }
+
+      // 剩下用超商處理，每筆最多 60000，費率分段
+      const convFee = (amt) => {
+        if (amt <= 20000) return 17;
+        if (amt <= 40000) return 22;
+        return 27;
+      };
+
+      while (remain > 0) {
+        let chunk = 0;
+        if (remain > 60000) {
+          chunk = 60000;
+        } else if (remain > 40000) {
+          chunk = 60000;
+        } else if (remain > 20000) {
+          chunk = 40000;
+        } else {
+          chunk = remain;
+        }
+        let f = convFee(chunk);
+        breakdown.push(`超商繳 ${chunk} 元，手續費 ${f} 元`);
+        fee += f;
+        remain -= chunk;
+      }
+
+      result += `總手續費：${fee} 元\n\n明細：\n` + breakdown.join("\n");
+      document.getElementById("result").innerText = result;
+    }
+  </script></body>
+</html>
