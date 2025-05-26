@@ -41,40 +41,46 @@
       let result = "";
       let fee = 0;
       let breakdown = [];
-
       let remain = T;
 
-      // 中信分筆，每筆最多 150000，整百
-      while (remain >= 100) {
-        let thisPay = Math.min(Math.floor(remain / 100) * 100, 150000);
-        breakdown.push(`中信繳 ${thisPay} 元，手續費 5 元`);
-        fee += 5;
-        remain -= thisPay;
-        if (thisPay < 150000) break; // 不再多筆中信
-      }
-
-      // 剩下用超商處理，每筆最多 60000，費率分段
       const convFee = (amt) => {
         if (amt <= 20000) return 17;
         if (amt <= 40000) return 22;
         return 27;
       };
 
-      while (remain > 0) {
-        let chunk = 0;
-        if (remain > 60000) {
-          chunk = 60000;
-        } else if (remain > 40000) {
-          chunk = 60000;
-        } else if (remain > 20000) {
-          chunk = 40000;
-        } else {
-          chunk = remain;
-        }
-        let f = convFee(chunk);
-        breakdown.push(`超商繳 ${chunk} 元，手續費 ${f} 元`);
+      // 若金額小於等於 40000，直接全超商處理最便宜
+      if (T <= 40000) {
+        let f = convFee(T);
+        breakdown.push(`超商繳 ${T} 元，手續費 ${f} 元`);
         fee += f;
-        remain -= chunk;
+      } else {
+        // 中信優先繳整百，最多 150000 一筆
+        while (remain >= 100) {
+          let thisPay = Math.min(Math.floor(remain / 100) * 100, 150000);
+          breakdown.push(`中信繳 ${thisPay} 元，手續費 5 元`);
+          fee += 5;
+          remain -= thisPay;
+          if (thisPay < 150000) break; // 不再多筆中信
+        }
+
+        // 剩餘金額超商拆分
+        while (remain > 0) {
+          let chunk = 0;
+          if (remain > 60000) {
+            chunk = 60000;
+          } else if (remain > 40000) {
+            chunk = 60000;
+          } else if (remain > 20000) {
+            chunk = 40000;
+          } else {
+            chunk = remain;
+          }
+          let f = convFee(chunk);
+          breakdown.push(`超商繳 ${chunk} 元，手續費 ${f} 元`);
+          fee += f;
+          remain -= chunk;
+        }
       }
 
       result += `總手續費：${fee} 元\n\n明細：\n` + breakdown.join("\n");
