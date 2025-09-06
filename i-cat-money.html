@@ -1,97 +1,96 @@
-<!DOCTYPE html><html lang="zh-Hant">
+<!DOCTYPE html>
+<html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>繳費手續費計算器</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body {
-      font-family: sans-serif;
-      padding: 2rem;
-      background: #f5f5f5;
-    }
-    .card {
-      background: white;
-      padding: 1.5rem;
-      border-radius: 1rem;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      max-width: 500px;
-      margin: auto;
-    }
-    input, button {
-      padding: 0.5rem;
-      font-size: 1rem;
-      margin: 0.5rem 0;
-      width: 100%;
-    }
-    .result {
-      margin-top: 1rem;
-      white-space: pre-wrap;
+      font-family: 'Inter', sans-serif;
+      background-color: #f0f4f8;
     }
   </style>
 </head>
-<body>
-  <div class="card">
-    <h2>最低手續費繳費拆法計算器</h2>
-    <input type="number" id="amount" placeholder="請輸入繳費金額（元）">
-    <button onclick="calculate()">計算</button>
-    <div class="result" id="result"></div>
-  </div>  <script>
+<body class="flex items-center justify-center min-h-screen p-4">
+  <div class="bg-white p-8 rounded-2xl shadow-xl max-w-sm w-full mx-auto">
+    <h2 class="text-3xl font-bold text-gray-800 mb-4 text-center">最低手續費繳費拆法計算器</h2>
+    <p class="text-gray-500 mb-6 text-center">輸入金額，計算最佳繳費組合</p>
+    <div class="space-y-4">
+      <input type="number" id="amount" placeholder="請輸入繳費金額（元）" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <button onclick="calculate()" class="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-200">計算</button>
+      <div id="result" class="result mt-4 p-4 bg-gray-50 rounded-lg text-gray-700 whitespace-pre-wrap text-sm"></div>
+    </div>
+  </div>
+
+  <script>
     function calculate() {
+      // 取得使用者輸入的金額
       let T = parseInt(document.getElementById("amount").value);
-      if (isNaN(T) || T <= 0) return;
-      let result = "";
-      let fee = 0;
+      const resultElement = document.getElementById("result");
+
+      if (isNaN(T) || T <= 0) {
+        resultElement.innerText = "請輸入有效的金額。";
+        return;
+      }
+
+      let resultText = "";
+      let totalFee = 0;
       let breakdown = [];
       let remain = T;
 
+      // 超商手續費計算函式
       const convFee = (amt) => {
         if (amt <= 20000) return 17;
         if (amt <= 40000) return 22;
         return 27;
       };
 
-      // 若金額小於等於 40000，需判斷是否為整百
+      // 判斷金額是否小於等於40000
       if (T <= 40000) {
+        // 如果是整百，使用中信繳費最省
         if (T % 100 === 0) {
-          // 整百金額，走中信最省
           breakdown.push(`中信繳 ${T} 元，手續費 5 元`);
-          fee += 5;
+          totalFee += 5;
         } else {
-          // 有零錢，用一次超商最省
-          let f = convFee(T);
-          breakdown.push(`超商繳 ${T} 元，手續費 ${f} 元`);
-          fee += f;
+          // 有零錢，使用一次超商最省
+          let fee = convFee(T);
+          breakdown.push(`超商繳 ${T} 元，手續費 ${fee} 元`);
+          totalFee += fee;
         }
       } else {
-        // 中信優先繳整百，最多 150000 一筆
+        // 金額大於40000，中信繳整百金額優先，單筆最高150000
         while (remain >= 100) {
           let thisPay = Math.min(Math.floor(remain / 100) * 100, 150000);
           breakdown.push(`中信繳 ${thisPay} 元，手續費 5 元`);
-          fee += 5;
+          totalFee += 5;
           remain -= thisPay;
-          if (thisPay < 150000) break; // 不再多筆中信
+          if (thisPay < 150000) break; // 如果單筆繳費金額不足150000，則不再用中信
         }
 
-        // 剩餘金額超商拆分
+        // 剩餘金額使用超商拆分
         while (remain > 0) {
           let chunk = 0;
-          if (remain > 60000) {
+          if (remain >= 60000) {
             chunk = 60000;
-          } else if (remain > 40000) {
-            chunk = 60000;
-          } else if (remain > 20000) {
+          } else if (remain >= 40000) {
             chunk = 40000;
+          } else if (remain >= 20000) {
+            chunk = 20000;
           } else {
             chunk = remain;
           }
-          let f = convFee(chunk);
-          breakdown.push(`超商繳 ${chunk} 元，手續費 ${f} 元`);
-          fee += f;
+          let fee = convFee(chunk);
+          breakdown.push(`超商繳 ${chunk} 元，手續費 ${fee} 元`);
+          totalFee += fee;
           remain -= chunk;
         }
       }
 
-      result += `總手續費：${fee} 元\n\n明細：\n` + breakdown.join("\n");
-      document.getElementById("result").innerText = result;
+      // 組裝結果字串並顯示
+      resultText += `總手續費：${totalFee} 元\n\n明細：\n` + breakdown.join("\n");
+      resultElement.innerText = resultText;
     }
-  </script></body>
+  </script>
+</body>
 </html>
